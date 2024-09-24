@@ -1,5 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
 import { ExchangeRateInfo } from '../api/CnbExchangeRatesApi';
+import { convertCzkExchangeRate } from '../utils/convertCzkExchangeRate';
 
 const TableStyled = styled.table`
   width: 100%;
@@ -47,6 +49,22 @@ const CountryCell = styled.div`
   }
 `;
 
+const ConvertedCell = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 0.5rem;
+
+  strong {
+    font-weight: 550;
+  }
+
+  span {
+    font-weight: 300;
+    width: 2rem;
+  }
+`;
+
 type ExchangeRatesTableProps = {
   exchangeRates: ExchangeRateInfo[];
   amountInCZK?: number;
@@ -62,6 +80,7 @@ export const ExchangeRatesTable = (props: ExchangeRatesTableProps) => {
           <TableHeader>Code</TableHeader>
           <TableHeader $align='right'>Amount</TableHeader>
           <TableHeader $align='right'>Rate</TableHeader>
+          <TableHeader $align='right'>Converted CZK</TableHeader>
         </tr>
       </thead>
       <tbody>
@@ -76,6 +95,28 @@ export const ExchangeRatesTable = (props: ExchangeRatesTableProps) => {
             <td>{exchangeRate.code}</td>
             <TableDataNumber>{exchangeRate.amount}</TableDataNumber>
             <TableDataNumber>{exchangeRate.rate.toFixed(3)}</TableDataNumber>
+            <TableDataNumber>
+              {props.amountInCZK != null ? (
+                <ConvertedCell>
+                  <strong>
+                    {(() => {
+                      try {
+                        return convertCzkExchangeRate({
+                          czk: props.amountInCZK,
+                          rate: exchangeRate.rate,
+                          amount: exchangeRate.amount,
+                        }).toFixed(3);
+                      } catch (_error) {
+                        return '?';
+                      }
+                    })()}
+                  </strong>
+                  <span>{exchangeRate.code}</span>
+                </ConvertedCell>
+              ) : (
+                '–'
+              )}
+            </TableDataNumber>
           </tr>
         ))}
       </tbody>

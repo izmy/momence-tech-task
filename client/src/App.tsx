@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ExchangeRates } from './exchangeRates/ExchangeRates';
+import { Input } from './form/Input';
 
 const Container = styled.div`
     --container-gap: 2rem;
@@ -56,11 +57,26 @@ const Content = styled.div`
 `;
 
 export const App = () => {
+  const [value, setValue] = React.useState<string>('');
+
+  const handleValueChange = (value: string) => {
+    setValue(value);
+  };
+
+  const valueIsNumber = !Number.isNaN(Number(value));
+  const numberValue = valueIsNumber ? Number(value) : undefined;
+  const amountInCZK = numberValue != null && numberValue > 0 ? numberValue : undefined;
+
   return (
     <Container>
       <Layout>
         <Header>
           <Title>CNB Exchange Rates</Title>
+          <Input
+            value={value}
+            error={(value !== '' && !valueIsNumber) || (value !== '' && amountInCZK == null)}
+            onValueChange={handleValueChange}
+          />
         </Header>
         <Content>
           <ExchangeRates amountInCZK={amountInCZK} />
