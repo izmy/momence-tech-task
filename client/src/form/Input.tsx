@@ -22,7 +22,7 @@ const InputGroup = styled.div<{ $error?: boolean }>`
   &:focus-within,
   &:hover {
     border: 2px solid ${(props) => (props.$error ? 'var(--input-border-color-error)' : 'var(--input-border-color)')};
-    box-shadow: 0px 0px 0px 7px ${(props) => (props.$error ? 'var(--pink-light)' : 'var(--indigo-light)')};;
+    box-shadow: 0px 0px 0px 7px ${(props) => (props.$error ? 'var(--pink-light)' : 'var(--indigo-light)')};
     background-color: white;
   }
 `;

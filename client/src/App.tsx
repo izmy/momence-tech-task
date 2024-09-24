@@ -5,26 +5,26 @@ import { Input } from './form/Input';
 import { Route } from './routes/__root';
 
 const Container = styled.div`
-    --container-gap: 2rem;
+  --container-gap: 1rem;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    margin: var(--container-gap);
+  margin: var(--container-gap);
 `;
 
 const Layout = styled.main`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-    width: 100%;
-    max-width: 60rem;
+  width: 100%;
+  max-width: 60rem;
 
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 0.2);
-    border-radius: 0.5rem;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 0.2);
+  border-radius: 0.5rem;
 `;
 
 const Header = styled.div`
