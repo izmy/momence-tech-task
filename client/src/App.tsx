@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { ExchangeRates } from './exchangeRates/ExchangeRates';
-import { Input } from './form/Input';
+import { NumberInput } from './form/NumberInput';
 import { Route } from './routes/__root';
 
 const Container = styled.div`
@@ -59,9 +59,9 @@ const Content = styled.div`
 
 export const App = () => {
   const navigate = useNavigate();
-  const { value = '' } = Route.useSearch();
+  const { value } = Route.useSearch();
 
-  const handleValueChange = (value: string) => {
+  const handleValueChange = (value: number | undefined) => {
     navigate({
       search: (prev) => {
         return { ...prev, value };
@@ -70,17 +70,17 @@ export const App = () => {
   };
 
   const valueIsNumber = !Number.isNaN(Number(value));
-  const numberValue = valueIsNumber ? Number(value) : undefined;
-  const amountInCZK = numberValue != null && numberValue > 0 ? numberValue : undefined;
+  const amountInCZK = value != null && value > 0 ? value : undefined;
 
   return (
     <Container>
       <Layout>
         <Header>
           <Title>CNB Exchange Rates</Title>
-          <Input
+
+          <NumberInput
             value={value}
-            error={(value !== '' && !valueIsNumber) || (value !== '' && amountInCZK == null)}
+            error={!valueIsNumber && value != null}
             onValueChange={handleValueChange}
           />
         </Header>

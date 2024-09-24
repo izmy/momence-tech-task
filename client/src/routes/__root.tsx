@@ -3,7 +3,7 @@ import * as v from 'valibot';
 
 const QueryParamsSchema = v.object({
   favorites: v.optional(v.array(v.string())),
-  value: v.optional(v.string()),
+  value: v.optional(v.number()),
 });
 
 export type QueryParams = v.InferOutput<typeof QueryParamsSchema>;

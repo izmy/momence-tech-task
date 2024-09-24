@@ -1,4 +1,6 @@
+import React from 'react';
 import styled from 'styled-components';
+import { isLikeNumber, parseNumber } from '../utils/numberHelpers';
 
 const InputGroup = styled.div<{ $error?: boolean }>`
   --input-border-color: oklch(0.4 0.11 280);
@@ -41,22 +43,38 @@ const InputStyled = styled.input`
 `;
 
 type InputProps = {
-  value: string;
+  value: number | undefined;
   error?: boolean;
-  onValueChange: (value: string) => void;
+  onValueChange: (value: number | undefined) => void;
 };
 
-export const Input = (props: InputProps) => {
+export const NumberInput = (props: InputProps) => {
+  const [value, setValue] = React.useState(`${props.value ?? ''}`);
+
+  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.currentTarget.value);
+
+    const rawValue = event.currentTarget.value.replace(',', '.').trim();
+
+    if (!isLikeNumber(rawValue)) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    const parsedNumber = parseNumber(rawValue);
+    props.onValueChange(parsedNumber);
+  };
+
   return (
     <InputGroup $error={props.error}>
       <InputStyled
+        type='number'
+        step='any'
         autoFocus
         placeholder='Type here...'
-        value={props.value}
-        onChange={(e) => {
-          const value = e.currentTarget.value;
-          props.onValueChange(value);
-        }}
+        value={value}
+        onChange={handleValueChange}
       />
       <span>CZK</span>
     </InputGroup>
