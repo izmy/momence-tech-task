@@ -1,0 +1,8 @@
+{
+    "name": "@momence/cnb-exchange-rates",
+    "description": "Momence tech task for CNB exchange rates",
+    "private": true,
+    "version": "1.0.0",
+    "packageManager": "pnpm@8.15.6",
+    "scripts": {}
+}
