@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "pnpm run /dev:/",
+    "dev:run": "vite",
+    "dev:router": "tsr watch",
     "build": "tsc -b && vite build",
     "test": "vitest",
     "lint": "eslint .",
@@ -12,8 +14,8 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.56.2",
-    "@tanstack/react-router": "1.58.7",
-    "@tanstack/router-cli": "1.58.1",
+    "@tanstack/react-router": "1.51.0",
+    "@tanstack/router-cli": "1.51.0",
     "react-dom": "^18.3.1",
     "react": "^18.3.1",
     "styled-components": "^6.1.13",

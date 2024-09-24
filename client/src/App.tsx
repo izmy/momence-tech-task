@@ -1,7 +1,8 @@
-import React from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { ExchangeRates } from './exchangeRates/ExchangeRates';
 import { Input } from './form/Input';
+import { Route } from './routes/__root';
 
 const Container = styled.div`
     --container-gap: 2rem;
@@ -57,10 +58,15 @@ const Content = styled.div`
 `;
 
 export const App = () => {
-  const [value, setValue] = React.useState<string>('');
+  const navigate = useNavigate();
+  const { value = '' } = Route.useSearch();
 
   const handleValueChange = (value: string) => {
-    setValue(value);
+    navigate({
+      search: (prev) => {
+        return { ...prev, value };
+      },
+    });
   };
 
   const valueIsNumber = !Number.isNaN(Number(value));

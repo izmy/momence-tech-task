@@ -1,6 +1,7 @@
-import React from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { ExchangeRateInfo } from '../api/CnbExchangeRatesApi';
+import { Route } from '../routes/__root';
 import { Star } from '../shared/Star';
 import { convertCzkExchangeRate } from '../utils/convertCzkExchangeRate';
 import { currencySymbolMap } from '../utils/currencySymbolMap';
@@ -79,14 +80,21 @@ type ExchangeRatesTableProps = {
 };
 
 export const ExchangeRatesTable = (props: ExchangeRatesTableProps) => {
-  const [favorites, setFavorites] = React.useState<string[]>([]);
+  const navigate = useNavigate();
+  const { favorites = [] } = Route.useSearch();
 
   const toggleFavorite = (code: string) => {
-    if (favorites.includes(code)) {
-      setFavorites(favorites.filter((favorite) => favorite !== code));
-    } else {
-      setFavorites([...favorites, code]);
-    }
+    navigate({
+      search: (prev) => {
+        const newFavorites = favorites.includes(code)
+          ? favorites.filter((favorite) => favorite !== code)
+          : favorites != null
+            ? [...favorites, code]
+            : [code];
+
+        return { ...prev, favorites: newFavorites };
+      },
+    });
   };
 
   const sortedExchangeRates = props.exchangeRates.sort((exchangeRateA, exchangeRateB) => {
@@ -123,7 +131,7 @@ export const ExchangeRatesTable = (props: ExchangeRatesTableProps) => {
                   toggleFavorite(exchangeRate.code);
                 }}
               >
-                <Star active={favorites.includes(exchangeRate.code)} />
+                <Star active={favorites.includes(exchangeRate.code) ?? false} />
               </StarCell>
             </td>
             <td>
