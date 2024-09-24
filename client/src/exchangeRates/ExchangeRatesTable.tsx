@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ExchangeRateInfo } from '../api/CnbExchangeRatesApi';
 import { convertCzkExchangeRate } from '../utils/convertCzkExchangeRate';
+import { currencySymbolMap } from '../utils/currencySymbolMap';
 
 const TableStyled = styled.table`
   width: 100%;
@@ -88,10 +89,21 @@ export const ExchangeRatesTable = (props: ExchangeRatesTableProps) => {
           <tr key={exchangeRate.code}>
             <td>
               <CountryCell>
+                <img
+                  alt={`${exchangeRate.country} flag`}
+                  src={`/flags/${exchangeRate.code.toLowerCase()}.png`}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.remove();
+                  }}
+                />
                 <span>{exchangeRate.country}</span>
               </CountryCell>
             </td>
-            <td>{exchangeRate.currency}</td>
+            <td>
+              {exchangeRate.currency} (
+              {currencySymbolMap.get(exchangeRate.code) ?? exchangeRate.code})
+            </td>
             <td>{exchangeRate.code}</td>
             <TableDataNumber>{exchangeRate.amount}</TableDataNumber>
             <TableDataNumber>{exchangeRate.rate.toFixed(3)}</TableDataNumber>
