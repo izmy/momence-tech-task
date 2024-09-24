@@ -1,4 +1,6 @@
+import React from 'react';
 import styled from 'styled-components';
+import { ExchangeRates } from './exchangeRates/ExchangeRates';
 
 const Container = styled.div`
     --container-gap: 2rem;
@@ -60,7 +62,9 @@ export const App = () => {
         <Header>
           <Title>CNB Exchange Rates</Title>
         </Header>
-        <Content>Hello world!</Content>
+        <Content>
+          <ExchangeRates amountInCZK={amountInCZK} />
+        </Content>
       </Layout>
     </Container>
   );
