@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ExchangeRateInfo } from '../api/CnbExchangeRatesApi';
+import { Star } from '../shared/Star';
 import { convertCzkExchangeRate } from '../utils/convertCzkExchangeRate';
 import { currencySymbolMap } from '../utils/currencySymbolMap';
 
@@ -39,6 +40,12 @@ const TableDataNumber = styled.td`
   font-variant-numeric: tabular-nums;
 `;
 
+const StarCell = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+`;
+
 const CountryCell = styled.div`
   display: flex;
   align-items: center;
@@ -72,10 +79,33 @@ type ExchangeRatesTableProps = {
 };
 
 export const ExchangeRatesTable = (props: ExchangeRatesTableProps) => {
+  const [favorites, setFavorites] = React.useState<string[]>([]);
+
+  const toggleFavorite = (code: string) => {
+    if (favorites.includes(code)) {
+      setFavorites(favorites.filter((favorite) => favorite !== code));
+    } else {
+      setFavorites([...favorites, code]);
+    }
+  };
+
+  const sortedExchangeRates = props.exchangeRates.sort((exchangeRateA, exchangeRateB) => {
+    if (favorites.includes(exchangeRateA.code) && !favorites.includes(exchangeRateB.code)) {
+      return -1;
+    }
+
+    if (!favorites.includes(exchangeRateA.code) && favorites.includes(exchangeRateB.code)) {
+      return 1;
+    }
+
+    return exchangeRateA.country.localeCompare(exchangeRateB.country);
+  });
+
   return (
     <TableStyled>
       <thead>
         <tr>
+          <TableHeader />
           <TableHeader>Country</TableHeader>
           <TableHeader>Currency</TableHeader>
           <TableHeader>Code</TableHeader>
@@ -85,8 +115,17 @@ export const ExchangeRatesTable = (props: ExchangeRatesTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {props.exchangeRates.map((exchangeRate) => (
+        {sortedExchangeRates.map((exchangeRate) => (
           <tr key={exchangeRate.code}>
+            <td>
+              <StarCell
+                onClick={() => {
+                  toggleFavorite(exchangeRate.code);
+                }}
+              >
+                <Star active={favorites.includes(exchangeRate.code)} />
+              </StarCell>
+            </td>
             <td>
               <CountryCell>
                 <img
