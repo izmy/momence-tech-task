@@ -1,4 +1,4 @@
-import { ExchangeRate } from "../src/routes/exchangeRatesRoute";
+import { ExchangeRate } from "../routes/exchangeRatesRoute";
 
 const CNB_EXCHANGE_RATE_TABLE_HEADER = "Country|Currency|Amount|Code|Rate";
 

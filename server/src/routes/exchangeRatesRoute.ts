@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { parseCnbExchangeRates } from "../../utils/parseCnbExchangeRateFixing";
 import { fetchCnbExchangeRateFixing } from "../services/fetchCnbExchangeRateFixing";
+import { parseCnbExchangeRates } from "../utils/parseCnbExchangeRateFixing";
 
 export type ExchangeRate = {
   country: string;
